@@ -28,8 +28,8 @@ create_equicorrelated <- function(X, randomize) {
   # Set s = min(2 * smallest eigenvalue of X'X, 1), so that all the correlations
   # have the same value 1-s.
   if (any(X.svd$d <= 1e-5 * max(X.svd$d)))
-    stop(paste('Data matrix is rank deficient.',
-               'Equicorrelated knockoffs will have no power.'))
+    warning(paste('Data matrix is rank deficient.',
+              'Equicorrelated knockoffs will have no power.'))
   lambda_min = min(X.svd$d)^2
   s = min(2*lambda_min, 1)
   
