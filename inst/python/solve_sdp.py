@@ -1,6 +1,6 @@
 import numpy as np
 import cvxpy as cvx
-
+import warnings
 
 def solve_sdp(G):
     """ Solves the SDP problem:
@@ -23,8 +23,9 @@ def solve_sdp(G):
     prob = cvx.Problem(objective, constraints)
     
     # Solve the problem.
-    prob.solve()
-    assert prob.status == cvx.OPTIMAL
+    prob.solve(solver=cvx.SCS)
+    if prob.status != cvx.OPTIMAL:
+        warnings.warn('Solver did not converge')
     
     # Return as array, not as matrix.
     return np.asarray(s.value).flatten()
